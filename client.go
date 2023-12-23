@@ -34,6 +34,7 @@ type HttpClient interface {
 	Get(url string) (resp *http.Response, err error)
 	Head(url string) (resp *http.Response, err error)
 	Post(url, contentType string, body io.Reader) (resp *http.Response, err error)
+	TClient() http.Client
 }
 
 // Interface guards are a cheap way to make sure all methods are implemented, this is a static check and does not affect runtime performance.
@@ -391,6 +392,10 @@ func (c *httpClient) Post(url, contentType string, body io.Reader) (resp *http.R
 	req.Header.Set("Content-Type", contentType)
 
 	return c.Do(req)
+}
+
+func (c *httpClient) TClient() http.Client {
+	return c.Client
 }
 
 func allToLower(list []string) []string {
